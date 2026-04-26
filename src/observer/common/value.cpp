@@ -38,6 +38,7 @@ Value::Value(const Value &other)
   this->own_data_  = other.own_data_;
   switch (this->attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       set_string_from_other(other);
     } break;
 
@@ -68,6 +69,7 @@ Value &Value::operator=(const Value &other)
   this->own_data_  = other.own_data_;
   switch (this->attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       set_string_from_other(other);
     } break;
 
@@ -97,6 +99,7 @@ void Value::reset()
 {
   switch (attr_type_) {
     case AttrType::CHARS:
+    case AttrType::TEXTS:
       if (own_data_ && value_.pointer_value_ != nullptr) {
         delete[] value_.pointer_value_;
         value_.pointer_value_ = nullptr;
@@ -114,6 +117,7 @@ void Value::set_data(char *data, int length)
 {
   switch (attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       set_string(data, length);
     } break;
     case AttrType::INTS: {
@@ -201,6 +205,7 @@ void Value::set_value(const Value &value)
       set_float(value.get_float());
     } break;
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       set_string(value.get_string().c_str());
     } break;
     case AttrType::BOOLEANS: {
@@ -226,6 +231,7 @@ char *Value::data() const
 {
   switch (attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       return value_.pointer_value_;
     } break;
     default: {
@@ -251,6 +257,7 @@ int Value::get_int() const
 {
   switch (attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       try {
         return (int)(stol(value_.pointer_value_));
       } catch (exception const &ex) {
@@ -279,6 +286,7 @@ float Value::get_float() const
 {
   switch (attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       try {
         return stof(value_.pointer_value_);
       } catch (exception const &ex) {
@@ -315,6 +323,7 @@ bool Value::get_boolean() const
 {
   switch (attr_type_) {
     case AttrType::CHARS: {
+    case AttrType::TEXTS:
       try {
         float val = stof(value_.pointer_value_);
         if (val >= EPSILON || val <= -EPSILON) {
